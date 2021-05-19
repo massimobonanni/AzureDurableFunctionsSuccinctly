@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace DurableFunctions
 {
-    public static class Function1
+    public static class Client
     {
         [FunctionName("Function1")]
         public static async Task<List<string>> RunOrchestrator(

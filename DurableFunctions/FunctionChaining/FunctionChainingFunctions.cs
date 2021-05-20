@@ -94,7 +94,7 @@ namespace DurableFunctions.FunctionChaining
                 await outputBlob.WriteInvoiceAsync(order);
             }
 
-            var invoice = new Invoice() { order = order, fileName = fileName };
+            var invoice = new Invoice() { order = order, fileName = $"{order.orderId}.txt" };
 
             return invoice;
         }

@@ -19,7 +19,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="FanOut-FanIn\" />
     <Folder Include="Monitoring\" />
     <Folder Include="HumanInteraction\" />
   </ItemGroup>

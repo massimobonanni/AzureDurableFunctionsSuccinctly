@@ -13,10 +13,10 @@ using Newtonsoft.Json;
 
 namespace DurableFunctions.FanOutFanIn
 {
-    public static class FanOutFanInFunctions
+    public class FanOutFanInFunctions
     {
         [FunctionName("Backup_Client")]
-        public static async Task<HttpResponseMessage> Client(
+        public async Task<HttpResponseMessage> Client(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "funoutfanin/backup")] HttpRequestMessage req,
             [DurableClient] IDurableOrchestrationClient starter,
             ILogger log)
@@ -34,7 +34,7 @@ namespace DurableFunctions.FanOutFanIn
                     log.LogInformation($"Backup started - started orchestration with ID = '{instanceId}'.");
 
                     return starter.CreateCheckStatusResponse(req, instanceId);
-                } 
+                }
             }
             catch (Exception ex)
             {
@@ -45,7 +45,7 @@ namespace DurableFunctions.FanOutFanIn
         }
 
         [FunctionName("Backup_Orchestrator")]
-        public static async Task<BackupReport> Orchestrator(
+        public async Task<BackupReport> Orchestrator(
             [OrchestrationTrigger] IDurableOrchestrationContext context,
             ILogger log)
         {
@@ -71,7 +71,7 @@ namespace DurableFunctions.FanOutFanIn
         }
 
         [FunctionName("Backup_GetFileList")]
-        public static string[] GetFileList([ActivityTrigger] string rootPath,
+        public string[] GetFileList([ActivityTrigger] string rootPath,
             ILogger log)
         {
             log.LogInformation($"[ACTIVITY Backup_GetFileList] --> rootPath : {rootPath}");
@@ -81,7 +81,7 @@ namespace DurableFunctions.FanOutFanIn
 
         [FunctionName("Backup_CopyFileToBlob")]
         [StorageAccount("StorageAccount")]
-        public static async Task<long> CopyFileToBlob([ActivityTrigger] string filePath,
+        public async Task<long> CopyFileToBlob([ActivityTrigger] string filePath,
             Binder binder,
             ILogger log)
         {
@@ -105,5 +105,5 @@ namespace DurableFunctions.FanOutFanIn
 
     }
 
-    
+
 }

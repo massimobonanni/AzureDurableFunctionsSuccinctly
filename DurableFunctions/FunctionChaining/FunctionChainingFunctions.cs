@@ -14,10 +14,10 @@ using SendGrid.Helpers.Mail;
 
 namespace DurableFunctions.FunctionChaining
 {
-    public static class FunctionChainingFunctions
+    public  class FunctionChainingFunctions
     {
         [FunctionName("OrderManager_Client")]
-        public static async Task<HttpResponseMessage> Client(
+        public async Task<HttpResponseMessage> Client(
             [HttpTrigger(AuthorizationLevel.Function, "post",Route ="functionchaining/order")] HttpRequestMessage req,
             [DurableClient] IDurableOrchestrationClient starter,
             ILogger log)
@@ -43,7 +43,7 @@ namespace DurableFunctions.FunctionChaining
         }
 
         [FunctionName("OrderManager_Orchestrator")]
-        public static async Task<Invoice> Orchestrator(
+        public async Task<Invoice> Orchestrator(
             [OrchestrationTrigger] IDurableOrchestrationContext context,
             ILogger log)
         {
@@ -61,7 +61,7 @@ namespace DurableFunctions.FunctionChaining
         }
 
         [FunctionName("OrderManager_SaveOrder")]
-        public static async Task<OrderRow> SaveOrder([ActivityTrigger] Order order,
+        public async Task<OrderRow> SaveOrder([ActivityTrigger] Order order,
             [Table("ordersTable", Connection = "StorageAccount")] IAsyncCollector<OrderRow> ordersTable,
             ILogger log)
         {
@@ -81,7 +81,7 @@ namespace DurableFunctions.FunctionChaining
 
         [FunctionName("OrderManager_CreateInvoice")]
         [StorageAccount("StorageAccount")]
-        public static async Task<Invoice> CreateInvoice([ActivityTrigger] OrderRow order,
+        public async Task<Invoice> CreateInvoice([ActivityTrigger] OrderRow order,
             IBinder outputBinder,
             ILogger log)
         {
@@ -101,7 +101,7 @@ namespace DurableFunctions.FunctionChaining
 
         [FunctionName("OrderManager_SendMail")]
         [StorageAccount("StorageAccount")]
-        public static async Task SendMail([ActivityTrigger] Invoice invoice,
+        public async Task SendMail([ActivityTrigger] Invoice invoice,
              [SendGrid(ApiKey = "SendGridApiKey")] IAsyncCollector<SendGridMessage> messageCollector,
              IBinder invoiceBinder,
              ILogger log)

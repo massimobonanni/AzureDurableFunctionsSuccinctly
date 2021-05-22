@@ -14,11 +14,11 @@ using SendGrid.Helpers.Mail;
 
 namespace DurableFunctions.FunctionChaining
 {
-    public  class FunctionChainingFunctions
+    public class FunctionChainingFunctions
     {
         [FunctionName("OrderManager_Client")]
         public async Task<HttpResponseMessage> Client(
-            [HttpTrigger(AuthorizationLevel.Function, "post",Route ="functionchaining/order")] HttpRequestMessage req,
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "functionchaining/order")] HttpRequestMessage req,
             [DurableClient] IDurableOrchestrationClient starter,
             ILogger log)
         {
@@ -66,17 +66,11 @@ namespace DurableFunctions.FunctionChaining
             ILogger log)
         {
             log.LogInformation($"[ACTIVITY OrderManager_SaveOrder] --> order : {order}");
-            try
-            {
-                var orderRow = new OrderRow(order);
-                await ordersTable.AddAsync(orderRow);
-                return orderRow;
-            }
-            catch (Exception ex)
-            {
-                log.LogError(ex, $"Error during saving in Storage Table");
-                return null;
-            }
+
+            var orderRow = new OrderRow(order);
+            await ordersTable.AddAsync(orderRow);
+            return orderRow;
+
         }
 
         [FunctionName("OrderManager_CreateInvoice")]

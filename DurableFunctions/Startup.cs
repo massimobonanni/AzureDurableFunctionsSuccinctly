@@ -1,4 +1,6 @@
 ﻿using DurableFunctions;
+using DurableFunctions.Entities;
+using DurableFunctions.Entities.Interfaces;
 using DurableFunctions.Monitoring;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Hosting;
@@ -15,6 +17,7 @@ public class Startup : IWebJobsStartup
     public void Configure(IWebJobsBuilder builder)
     {
         builder.Services.AddTransient<IWeatherService, OpenWeatherMapService>();
+        builder.Services.AddTransient<IEntityFactory, EntityFactory>();
 
         builder.Services.BuildServiceProvider();
     }

@@ -1,0 +1,6 @@
+{
+  "historyRetention": "00:10:00",
+  "temperatureHighThreshold": null,
+  "temperatureLowThreshold": null,
+  "notificationNumber": null
+}

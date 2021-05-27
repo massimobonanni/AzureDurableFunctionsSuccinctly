@@ -126,14 +126,15 @@ namespace DurableFunctions.Entities.TemperatureDevice
                     if (!TemperatureHighNotificationFired &&
                         lastTemperature > EntityConfig.TemperatureHighThreshold)
                     {
-                        //Entity.Current.StartNewOrchestration(nameof(Orchestrators.SendNotification),
-                        //    new Orchestrators.NotificationData()
-                        //    {
-                        //        DeviceName = DeviceName,
-                        //        NotificationNumber = EntityConfig.NotificationNumber
-                        //    });
+                        Entity.Current.StartNewOrchestration("Alerts_SendTemperatureNotification",
+                            new Alerts.TemperatureAlerts.TemperatureNotificationData()
+                            {
+                                DeviceName = DeviceName,
+                                NotificationNumber = EntityConfig.NotificationNumber,
+                                Temperature=lastTemperature
+                            });
 
-                        //TemperatureHighNotificationFired = true;
+                        TemperatureHighNotificationFired = true;
                     }
                     if (lastTemperature <= EntityConfig.TemperatureHighThreshold)
                     {
@@ -146,14 +147,15 @@ namespace DurableFunctions.Entities.TemperatureDevice
                     if (!TemperatureLowNotificationFired &&
                         lastTemperature < EntityConfig.TemperatureLowThreshold)
                     {
-                        //Entity.Current.StartNewOrchestration(nameof(Orchestrators.SendNotification),
-                        //    new Orchestrators.NotificationData()
-                        //    {
-                        //        DeviceName = DeviceName,
-                        //        NotificationNumber = EntityConfig.NotificationNumber
-                        //    });
+                        Entity.Current.StartNewOrchestration("Alerts_SendTemperatureNotification",
+                            new Alerts.TemperatureAlerts.TemperatureNotificationData()
+                            {
+                                DeviceName = DeviceName,
+                                NotificationNumber = EntityConfig.NotificationNumber,
+                                Temperature = lastTemperature
+                            });
 
-                        //TemperatureLowNotificationFired = true;
+                        TemperatureLowNotificationFired = true;
                     }
 
                     if (lastTemperature >= EntityConfig.TemperatureLowThreshold)

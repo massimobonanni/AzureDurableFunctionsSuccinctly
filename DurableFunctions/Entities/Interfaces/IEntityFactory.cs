@@ -8,5 +8,7 @@ namespace DurableFunctions.Entities.Interfaces
     public interface IEntityFactory
     {
         Task<EntityId> GetEntityIdAsync(string deviceId, DeviceType type, CancellationToken token);
+
+        Task<string> GetEntityNameAsync(DeviceType type, CancellationToken token);
     }
 }

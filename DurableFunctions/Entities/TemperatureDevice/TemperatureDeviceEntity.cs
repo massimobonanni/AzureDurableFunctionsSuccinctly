@@ -30,12 +30,12 @@ namespace DurableFunctions.Entities.TemperatureDevice
 
             public bool TemperatureHighAlertEnabled()
             {
-                return TemperatureHighThreshold.HasValue && !string.IsNullOrWhiteSpace(NotificationNumber);
+                return TemperatureHighThreshold.HasValue;
             }
 
             public bool TemperatureLowAlertEnabled()
             {
-                return TemperatureLowThreshold.HasValue && !string.IsNullOrWhiteSpace(NotificationNumber);
+                return TemperatureLowThreshold.HasValue;
             }
         }
 
@@ -79,7 +79,7 @@ namespace DurableFunctions.Entities.TemperatureDevice
         {
             if (HistoryData == null)
                 HistoryData = new Dictionary<DateTimeOffset, DeviceData>();
-            
+
             DeviceName = telemetry.DeviceName;
 
             if (telemetry.Timestamp < DateTimeOffset.Now.Subtract(EntityConfig.HistoryRetention))
@@ -99,6 +99,18 @@ namespace DurableFunctions.Entities.TemperatureDevice
                 CheckAlert();
             }
         }
+        public Task<IDictionary<DateTimeOffset, DeviceData>> GetLastTelemetries(int numberOfTelemetries = 10)
+        {
+            IDictionary<DateTimeOffset, DeviceData> telemetryList = null;
+            if (HistoryData != null)
+            {
+                telemetryList = HistoryData
+                    .OrderByDescending(kv => kv.Key)
+                    .Take(numberOfTelemetries)
+                    .ToDictionary(kv => kv.Key, kv => kv.Value);
+            }
+            return Task.FromResult(telemetryList);
+        }
 
         public void SetConfiguration(string config)
         {
@@ -111,7 +123,6 @@ namespace DurableFunctions.Entities.TemperatureDevice
             catch (Exception)
             {
             }
-
         }
         #endregion [ Behaviour ]
 
@@ -126,14 +137,7 @@ namespace DurableFunctions.Entities.TemperatureDevice
                     if (!TemperatureHighNotificationFired &&
                         lastTemperature > EntityConfig.TemperatureHighThreshold)
                     {
-                        Entity.Current.StartNewOrchestration("Alerts_SendTemperatureNotification",
-                            new Alerts.TemperatureAlerts.TemperatureNotificationData()
-                            {
-                                DeviceName = DeviceName,
-                                NotificationNumber = EntityConfig.NotificationNumber,
-                                Temperature=lastTemperature
-                            });
-
+                        SendAlert(lastTemperature);
                         TemperatureHighNotificationFired = true;
                     }
                     if (lastTemperature <= EntityConfig.TemperatureHighThreshold)
@@ -147,22 +151,43 @@ namespace DurableFunctions.Entities.TemperatureDevice
                     if (!TemperatureLowNotificationFired &&
                         lastTemperature < EntityConfig.TemperatureLowThreshold)
                     {
-                        Entity.Current.StartNewOrchestration("Alerts_SendTemperatureNotification",
-                            new Alerts.TemperatureAlerts.TemperatureNotificationData()
-                            {
-                                DeviceName = DeviceName,
-                                NotificationNumber = EntityConfig.NotificationNumber,
-                                Temperature = lastTemperature
-                            });
-
+                        SendAlert(lastTemperature);
                         TemperatureLowNotificationFired = true;
                     }
-
                     if (lastTemperature >= EntityConfig.TemperatureLowThreshold)
                     {
                         TemperatureLowNotificationFired = false;
                     }
                 }
+            }
+        }
+
+        private void SendAlert(double lastTemperature)
+        {
+            var notificationEntityId = new EntityId(nameof(DeviceNotificationsEntity),
+                $"{Entity.Current.EntityName}|{Entity.Current.EntityKey}");
+
+            var notification = new DeviceNotificationInfo()
+            {
+                Timestamp = DateTimeOffset.Now,
+                DeviceId= Entity.Current.EntityKey,
+                DeviceType= Entity.Current.EntityName
+            };
+            notification.Telemetries.Add("temperature", lastTemperature);
+            notification.Metadata.Add("notificationNumber", EntityConfig?.NotificationNumber);
+
+            Entity.Current.SignalEntity<IDeviceNotificationEntity>(notificationEntityId,
+                n => n.NotificationFired(notification));
+
+            if (!string.IsNullOrWhiteSpace(EntityConfig?.NotificationNumber))
+            {
+                Entity.Current.StartNewOrchestration("Alerts_SendTemperatureNotification",
+                                            new Alerts.TemperatureAlerts.TemperatureNotificationData()
+                                            {
+                                                DeviceName = DeviceName,
+                                                NotificationNumber = EntityConfig.NotificationNumber,
+                                                Temperature = lastTemperature
+                                            });
             }
         }
 
@@ -185,4 +210,5 @@ namespace DurableFunctions.Entities.TemperatureDevice
         public static Task Run([EntityTrigger] IDurableEntityContext ctx, ILogger logger)
             => ctx.DispatchAsync<TemperatureDeviceEntity>(logger);
     }
+
 }

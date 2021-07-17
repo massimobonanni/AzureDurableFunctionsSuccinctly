@@ -1,0 +1,31 @@
+{
+  "$type": "DurableTask.AzureStorage.MessageData",
+  "ActivityId": "3a718fb6-80fc-4a90-ba92-6366da789f1d",
+  "TaskMessage": {
+    "$type": "DurableTask.Core.TaskMessage",
+    "Event": {
+      "$type": "DurableTask.Core.History.TaskScheduledEvent",
+      "EventType": 4,
+      "Name": "OrderManager_SaveOrder",
+      "Version": "",
+      "Input": "[{\"$type\":\"DurableFunctions.FunctionChaining.Order, DurableFunctions\",\"custName\":\"Massimo Bonanni\",\"custAddress\":\"Viale Giuseppe Verdi 1, Roma\",\"custEmail\":\"massimo.bonanni@microsoft.com\",\"cartId\":\"11111111\",\"date\":\"2021-05-18T13:00:00\",\"price\":435.0,\"fileName\":null}]",
+      "EventId": 0,
+      "IsPlayed": false,
+      "Timestamp": "2021-06-07T14:26:30.4134592Z"
+    },
+    "SequenceNumber": 0,
+    "OrchestrationInstance": {
+      "$type": "DurableTask.Core.OrchestrationInstance",
+      "InstanceId": "de534343c593443ca45dbc6165eb44ce",
+      "ExecutionId": "b064f9960f0447e983547c8d0801d5b6"
+    }
+  },
+  "CompressedBlobName": null,
+  "SequenceNumber": 2,
+  "Episode": 1,
+  "Sender": {
+    "InstanceId": "de534343c593443ca45dbc6165eb44ce",
+    "ExecutionId": "b064f9960f0447e983547c8d0801d5b6"
+  },
+  "SerializableTraceContext": null
+}

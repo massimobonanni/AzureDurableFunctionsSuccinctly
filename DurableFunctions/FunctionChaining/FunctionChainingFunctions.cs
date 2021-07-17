@@ -70,7 +70,6 @@ namespace DurableFunctions.FunctionChaining
             var orderRow = new OrderRow(order);
             await ordersTable.AddAsync(orderRow);
             return orderRow;
-
         }
 
         [FunctionName("OrderManager_CreateInvoice")]
@@ -88,7 +87,7 @@ namespace DurableFunctions.FunctionChaining
                 await outputBlob.WriteInvoiceAsync(order);
             }
 
-            var invoice = new Invoice() { order = order, fileName = $"{order.orderId}.txt" };
+            var invoice = new Invoice() { order = order, fullPath = fileName };
 
             return invoice;
         }
@@ -103,11 +102,11 @@ namespace DurableFunctions.FunctionChaining
             log.LogInformation($"[ACTIVITY OrderManager_SendMail] --> invoice : {invoice}");
 
             SendGridMessage message;
-            using (var inputBlob = invoiceBinder.Bind<TextReader>(new BlobAttribute(invoice.fileName)))
+            using (var inputBlob = invoiceBinder.Bind<TextReader>(new BlobAttribute(invoice.fullPath)))
             {
                 message = await SendGridHelper.CreateMessageAsync(invoice, inputBlob);
             }
             await messageCollector.AddAsync(message);
         }
     }
-}
+} 

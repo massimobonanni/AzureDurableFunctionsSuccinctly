@@ -3,7 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31229.75
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DurableFunctions", "DurableFunctions\DurableFunctions.csproj", "{16D68DD1-8556-4B0D-B2D5-0CBFABA30B3F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DurableFunctions", "DurableFunctions\DurableFunctions.csproj", "{16D68DD1-8556-4B0D-B2D5-0CBFABA30B3F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{507DE3D0-E581-48AB-BCC7-2F8EA943CA67}"
+	ProjectSection(SolutionItems) = preProject
+		FunctionChainingResponse.json = FunctionChainingResponse.json
+		FunctionChainingStatus.json = FunctionChainingStatus.json
+		OrchestratorToActivityMessage.json = OrchestratorToActivityMessage.json
+		OrchestratorToActivityMessage2.json = OrchestratorToActivityMessage2.json
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

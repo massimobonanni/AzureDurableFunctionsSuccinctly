@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace DurableFunctions.FunctionChaining
@@ -8,11 +9,18 @@ namespace DurableFunctions.FunctionChaining
     {
         public OrderRow order { get; set; }
 
-        public string fileName { get; set; }
+        public string fullPath { get; set; }
 
         public override string ToString()
         {
-            return $"order=[{order}], fileName={fileName}";
+            return $"order=[{order}], fullPath={fullPath}";
+        }
+
+        public string GetFileName()
+        {
+            if (fullPath == null) return null;
+
+            return fullPath.Split('/').LastOrDefault();
         }
     }
 }

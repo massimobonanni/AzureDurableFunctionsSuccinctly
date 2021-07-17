@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="DurableFunctions.Entities.Models.DeviceTelemetry">
+    <Position X="3" Y="8.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAACAAAAAAAAABAAEQAIAAAAAAA=</HashCode>
+      <FileName>Entities\Models\DeviceTelemetry.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Data" />
+      <Property Name="Type" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="DurableFunctions.Entities.Models.DeviceData">
+    <Position X="6" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Models\DeviceData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.Azure.WebJobs.Extensions.DurableTask.DurableEntityStatus">
+    <Position X="9.5" Y="8.5" Width="1.75" />
+    <TypeIdentifier />
+    <ShowAsAssociation>
+      <Property Name="State" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Newtonsoft.Json.Linq.JToken" Collapsed="true">
+    <Position X="12.25" Y="8.5" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="Microsoft.Azure.WebJobs.Extensions.DurableTask.IDurableOrchestrationClient">
+    <Position X="3.5" Y="2.5" Width="4.25" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="Microsoft.Azure.WebJobs.Extensions.DurableTask.IDurableEntityClient">
+    <Position X="9" Y="2.5" Width="2.75" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="Microsoft.Azure.WebJobs.Extensions.DurableTask.IDurableOrchestrationContext">
+    <Position X="12.75" Y="2.5" Width="5" />
+    <Members>
+      <Property Name="CurrentUtcDateTime" Hidden="true" />
+      <Property Name="InstanceId" Hidden="true" />
+      <Property Name="IsReplaying" Hidden="true" />
+      <Property Name="Name" Hidden="true" />
+      <Property Name="ParentInstanceId" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier />
+  </Interface>
+  <Enum Name="DurableFunctions.Entities.Models.DeviceType">
+    <Position X="6" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Entities\Models\DeviceType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

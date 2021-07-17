@@ -1,4 +1,7 @@
 ﻿using DurableFunctions.Entities.Models;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DurableFunctions.Entities.Interfaces
 {
@@ -6,5 +9,6 @@ namespace DurableFunctions.Entities.Interfaces
     {
         void SetConfiguration(string config);
         void TelemetryReceived(DeviceTelemetry telemetry);
+        Task<IDictionary<DateTimeOffset, DeviceData>> GetLastTelemetries(int numberOfTelemetries = 10);
     }
 }

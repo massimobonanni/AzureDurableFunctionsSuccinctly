@@ -27,7 +27,7 @@ namespace DurableFunctions.Helpers
             var text = System.Convert.ToBase64String(plainTextBytes);
 
             message.AddContent("text/plain", System.Text.Encoding.UTF8.GetString(plainTextBytes));
-            message.AddAttachment(invoice.fileName, text, "text/plain", "attachment", "Invoice File");
+            message.AddAttachment(invoice.GetFileName(), text, "text/plain", "attachment", "Invoice File");
 
             return message;
         }

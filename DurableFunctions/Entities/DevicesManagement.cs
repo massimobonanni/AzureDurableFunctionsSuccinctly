@@ -1,5 +1,6 @@
 ﻿using DurableFunctions.Entities.Interfaces;
 using DurableFunctions.Entities.Models;
+using DurableFunctions.Entities.TemperatureDevice;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -47,13 +48,20 @@ namespace DurableFunctions.Entities
           [HttpTrigger(AuthorizationLevel.Function, "get", Route = "devices")] HttpRequest req,
           [DurableClient] IDurableEntityClient client)
         {
+            if (!Enum.TryParse(typeof(DeviceType), req.Query["deviceType"], true, out var deviceType))
+            {
+                return new BadRequestResult();
+            }
+
             var result = new List<DeviceInfoModel>();
 
             var queryDefinition = new EntityQuery()
             {
                 PageSize = 100,
-                FetchState = true
+                FetchState = true,
+
             };
+            queryDefinition.EntityName = await _entityfactory.GetEntityNameAsync((DeviceType)deviceType, default);
 
             do
             {
@@ -61,11 +69,14 @@ namespace DurableFunctions.Entities
 
                 foreach (var item in queryResult.Entities)
                 {
-                    result.Add(item.ToDeviceInfoModel());
+                    var model = item.ToDeviceInfoModel();
+                    // if you want to add other filters to you method
+                    // you can add them here before adding the model to the return list
+                    result.Add(model);
                 }
 
                 queryDefinition.ContinuationToken = queryResult.ContinuationToken;
-            } while (queryDefinition.ContinuationToken != null && queryDefinition.ContinuationToken != "bnVsbA==");
+            } while (queryDefinition.ContinuationToken != null);
 
             return new OkObjectResult(result);
         }
@@ -111,6 +122,35 @@ namespace DurableFunctions.Entities
             await client.SignalEntityAsync<IDeviceEntity>(entityId, d => d.SetConfiguration(requestBody));
 
             return new OkObjectResult(requestBody);
+        }
+
+        [FunctionName(nameof(GetDeviceNotifications))]
+        public async Task<IActionResult> GetDeviceNotifications(
+          [HttpTrigger(AuthorizationLevel.Function, "get", Route = "notifications")] HttpRequest req,
+          [DurableClient] IDurableEntityClient client)
+        {
+            var result = new List<JObject>();
+
+            var queryDefinition = new EntityQuery()
+            {
+                PageSize = 100,
+                FetchState = true,
+                EntityName = nameof(DeviceNotificationsEntity)
+            };
+
+            do
+            {
+                var queryResult = await client.ListEntitiesAsync(queryDefinition, default);
+
+                foreach (var item in queryResult.Entities)
+                {
+                    result.Add(item.State as JObject);
+                }
+
+                queryDefinition.ContinuationToken = queryResult.ContinuationToken;
+            } while (queryDefinition.ContinuationToken != null);
+
+            return new OkObjectResult(result);
         }
     }
 

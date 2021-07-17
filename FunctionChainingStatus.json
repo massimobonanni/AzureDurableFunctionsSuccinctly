@@ -1,0 +1,33 @@
+{
+  "name": "OrderManager_Orchestrator",
+  "instanceId": "6a3f10a5108a416f87f2d4a2e90265b2",
+  "runtimeStatus": "Completed",
+  "input": {
+    "custName": "Massimo Bonanni",
+    "custAddress": "main street 1",
+    "custEmail": "massimo.bonanni@microsoft.com",
+    "cartId": "11111111",
+    "date": "2021-05-18T13:00:00",
+    "price": 435.0,
+    "fileName": null
+  },
+  "customStatus": null,
+  "output": {
+    "order": {
+      "PartitionKey": "ORDERS",
+      "RowKey": "5095b268-1a32-43a3-9938-fecce6fdbcd5",
+      "orderId": "5095b268-1a32-43a3-9938-fecce6fdbcd5",
+      "custName": "Massimo Bonanni",
+      "custAddress": "main street 1",
+      "custEmail": "massimo.bonanni@microsoft.com",
+      "cartId": "11111111",
+      "date": "2021-05-18T13:00:00",
+      "price": 435.0,
+      "isReported": false,
+      "fileName": null
+    },
+    "fullPath": "invoices/5095b268-1a32-43a3-9938-fecce6fdbcd5.txt"
+  },
+  "createdTime": "2021-06-22T07:00:16Z",
+  "lastUpdatedTime": "2021-06-22T07:00:34Z"
+}

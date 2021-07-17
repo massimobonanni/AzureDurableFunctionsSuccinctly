@@ -82,7 +82,7 @@ namespace DurableFunctions.FanOutFanIn
         [FunctionName("Backup_CopyFileToBlob")]
         [StorageAccount("StorageAccount")]
         public async Task<long> CopyFileToBlob([ActivityTrigger] string filePath,
-            Binder binder,
+            IBinder binder,
             ILogger log)
         {
             log.LogInformation($"[ACTIVITY Backup_CopyFileToBlob] --> filePath : {filePath}");

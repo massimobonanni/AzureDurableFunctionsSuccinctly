@@ -107,11 +107,14 @@ namespace DurableFunctions.HumanInteraction
 
                 if (taskCompleted == approvedResponseTask || taskCompleted == timeoutTask) // request approved
                 {
+                    if (taskCompleted == approvedResponseTask)
+                        timeoutCts.Cancel();
                     response.isApproved = true;
                     await context.CallActivityAsync("HumanInteraction_SaveRequest", response);
                 }
                 else
                 {
+                    timeoutCts.Cancel();
                     response.isApproved = false;
                 }
 
@@ -128,7 +131,7 @@ namespace DurableFunctions.HumanInteraction
             log.LogInformation($"[ACTIVITY HumanInteraction_SendMailToManager] --> response : {response}");
             var message = SendGridHelper.CreateMessageForManager(response);
             await messageCollector.AddAsync(message);
-         }
+        }
 
         [FunctionName("HumanInteraction_SendMailToEmployee")]
         public async Task SendMailToEmployee([ActivityTrigger] VacationResponse response,

@@ -12,7 +12,7 @@ namespace DurableFunctions.Entities
     {
         public Task<EntityId> GetEntityIdAsync(string deviceId, DeviceType type, CancellationToken token)
         {
-             EntityId entityId;
+            EntityId entityId;
             switch (type)
             {
                 case DeviceType.Temperature:
@@ -22,6 +22,20 @@ namespace DurableFunctions.Entities
                     break;
             }
             return Task.FromResult(entityId);
+        }
+
+        public Task<string> GetEntityNameAsync(DeviceType type, CancellationToken token)
+        {
+            string entityName = null;
+            switch (type)
+            {
+                case DeviceType.Temperature:
+                    entityName = nameof(TemperatureDeviceEntity);
+                    break;
+                default:
+                    break;
+            }
+            return Task.FromResult(entityName);
         }
     }
 }

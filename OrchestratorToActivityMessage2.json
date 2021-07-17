@@ -1,0 +1,31 @@
+{
+  "$type": "DurableTask.AzureStorage.MessageData",
+  "ActivityId": "6d838cd7-12bf-4e92-addd-989bc8351e86",
+  "TaskMessage": {
+    "$type": "DurableTask.Core.TaskMessage",
+    "Event": {
+      "$type": "DurableTask.Core.History.TaskScheduledEvent",
+      "EventType": 4,
+      "Name": "OrderManager_SendMail",
+      "Version": "",
+      "Input": "[{\"$type\":\"DurableFunctions.FunctionChaining.Invoice, DurableFunctions\",\"order\":{\"$type\":\"DurableFunctions.FunctionChaining.OrderRow, DurableFunctions\",\"PartitionKey\":\"ORDERS\",\"RowKey\":\"b115a550-9aa7-45d8-ab5b-66ffb56c2439\",\"orderId\":\"b115a550-9aa7-45d8-ab5b-66ffb56c2439\",\"custName\":\"Massimo Bonanni\",\"custAddress\":\"Viale Giuseppe Verdi 1, Roma\",\"custEmail\":\"massimo.bonanni@microsoft.com\",\"cartId\":\"11111111\",\"date\":\"2021-05-18T13:00:00\",\"price\":435.0,\"isReported\":false,\"fileName\":null},\"fileName\":\"b115a550-9aa7-45d8-ab5b-66ffb56c2439.txt\"}]",
+      "EventId": 2,
+      "IsPlayed": false,
+      "Timestamp": "2021-06-07T14:53:15.051187Z"
+    },
+    "SequenceNumber": 0,
+    "OrchestrationInstance": {
+      "$type": "DurableTask.Core.OrchestrationInstance",
+      "InstanceId": "de534343c593443ca45dbc6165eb44ce",
+      "ExecutionId": "b064f9960f0447e983547c8d0801d5b6"
+    }
+  },
+  "CompressedBlobName": null,
+  "SequenceNumber": 6,
+  "Episode": 3,
+  "Sender": {
+    "InstanceId": "de534343c593443ca45dbc6165eb44ce",
+    "ExecutionId": "b064f9960f0447e983547c8d0801d5b6"
+  },
+  "SerializableTraceContext": null
+}

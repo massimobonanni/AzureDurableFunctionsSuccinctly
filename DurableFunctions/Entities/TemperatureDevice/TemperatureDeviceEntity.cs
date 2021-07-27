@@ -1,5 +1,6 @@
 ﻿using DurableFunctions.Entities.Interfaces;
 using DurableFunctions.Entities.Models;
+using TemperatureNotificationData = DurableFunctions.Entities.Alerts.TemperatureAlerts.TemperatureNotificationData;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 using Microsoft.Extensions.Logging;
@@ -50,7 +51,11 @@ namespace DurableFunctions.Entities.TemperatureDevice
         #region [ State ]
 
         [JsonProperty("deviceType")]
-        public string DeviceType { get => Models.DeviceType.Temperature.ToString(); set { } }
+        public string DeviceType
+        {
+            get => Models.DeviceType.Temperature.ToString();
+            set { }
+        }
 
         [JsonProperty("historyData")]
         public Dictionary<DateTimeOffset, DeviceData> HistoryData { get; set; }
@@ -99,6 +104,7 @@ namespace DurableFunctions.Entities.TemperatureDevice
                 CheckAlert();
             }
         }
+
         public Task<IDictionary<DateTimeOffset, DeviceData>> GetLastTelemetries(int numberOfTelemetries = 10)
         {
             IDictionary<DateTimeOffset, DeviceData> telemetryList = null;
@@ -164,30 +170,27 @@ namespace DurableFunctions.Entities.TemperatureDevice
 
         private void SendAlert(double lastTemperature)
         {
-            var notificationEntityId = new EntityId(nameof(DeviceNotificationsEntity),
-                $"{Entity.Current.EntityName}|{Entity.Current.EntityKey}");
-
             var notification = new DeviceNotificationInfo()
             {
                 Timestamp = DateTimeOffset.Now,
-                DeviceId= Entity.Current.EntityKey,
-                DeviceType= Entity.Current.EntityName
+                DeviceId = Entity.Current.EntityKey,
+                DeviceType = Entity.Current.EntityName
             };
             notification.Telemetries.Add("temperature", lastTemperature);
             notification.Metadata.Add("notificationNumber", EntityConfig?.NotificationNumber);
 
-            Entity.Current.SignalEntity<IDeviceNotificationEntity>(notificationEntityId,
-                n => n.NotificationFired(notification));
+            Entity.Current.SignalNotification(notification);
 
             if (!string.IsNullOrWhiteSpace(EntityConfig?.NotificationNumber))
             {
-                Entity.Current.StartNewOrchestration("Alerts_SendTemperatureNotification",
-                                            new Alerts.TemperatureAlerts.TemperatureNotificationData()
-                                            {
-                                                DeviceName = DeviceName,
-                                                NotificationNumber = EntityConfig.NotificationNumber,
-                                                Temperature = lastTemperature
-                                            });
+                TemperatureNotificationData temperatureAlert = new TemperatureNotificationData()
+                {
+                    DeviceName = DeviceName,
+                    NotificationNumber = EntityConfig.NotificationNumber,
+                    Temperature = lastTemperature
+                };
+
+                Entity.Current.StartNewOrchestration("Alerts_SendTemperatureNotification", temperatureAlert);
             }
         }
 

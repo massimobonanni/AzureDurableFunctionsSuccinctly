@@ -7,8 +7,8 @@
       <FileName>Entities\Models\DeviceTelemetry.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="Data" />
       <Property Name="Type" />
+      <Property Name="Data" />
     </ShowAsAssociation>
   </Class>
   <Class Name="DurableFunctions.Entities.Models.DeviceData">
@@ -29,6 +29,31 @@
     <Position X="12.25" Y="8.5" Width="1.5" />
     <TypeIdentifier />
     <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DurableFunctions.Entities.TemperatureDevice.TemperatureDeviceEntity">
+    <Position X="3" Y="15" Width="2.75" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="DurableFunctions.Entities.TemperatureDevice.TemperatureDeviceEntity.DeviceConfiguration">
+        <TypeIdentifier>
+          <NewMemberFileName>Entities\TemperatureDevice\TemperatureDeviceEntity.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>IAAAAAAACAAABAACAEgACAIQAAAAUAAAAEIICAAAAAI=</HashCode>
+      <FileName>Entities\TemperatureDevice\TemperatureDeviceEntity.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DurableFunctions.Entities.Models.DeviceNotificationInfo" Collapsed="true">
+    <Position X="6.25" Y="17.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAAACAAIAAAAAAAAAEAAAAAAEAAA=</HashCode>
+      <FileName>Entities\Models\DeviceNotificationInfo.cs</FileName>
+    </TypeIdentifier>
   </Class>
   <Interface Name="Microsoft.Azure.WebJobs.Extensions.DurableTask.IDurableOrchestrationClient">
     <Position X="3.5" Y="2.5" Width="4.25" />
@@ -51,6 +76,13 @@
       <Compartment Name="Properties" Collapsed="true" />
     </Compartments>
     <TypeIdentifier />
+  </Interface>
+  <Interface Name="DurableFunctions.Entities.Interfaces.IDeviceEntity">
+    <Position X="3" Y="13" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAAAAAAAAACAIAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Interfaces\IDeviceEntity.cs</FileName>
+    </TypeIdentifier>
   </Interface>
   <Enum Name="DurableFunctions.Entities.Models.DeviceType">
     <Position X="6" Y="10.25" Width="1.5" />

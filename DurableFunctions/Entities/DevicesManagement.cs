@@ -55,7 +55,7 @@ namespace DurableFunctions.Entities
 
             var result = new List<DeviceInfoModel>();
 
-            var queryDefinition = new EntityQuery()
+            EntityQuery queryDefinition = new EntityQuery()
             {
                 PageSize = 100,
                 FetchState = true,
@@ -65,11 +65,11 @@ namespace DurableFunctions.Entities
 
             do
             {
-                var queryResult = await client.ListEntitiesAsync(queryDefinition, default);
+                EntityQueryResult queryResult = await client.ListEntitiesAsync(queryDefinition, default);
 
                 foreach (var item in queryResult.Entities)
                 {
-                    var model = item.ToDeviceInfoModel();
+                    DeviceInfoModel model = item.ToDeviceInfoModel();
                     // if you want to add other filters to you method
                     // you can add them here before adding the model to the return list
                     result.Add(model);
@@ -92,9 +92,9 @@ namespace DurableFunctions.Entities
                 return new BadRequestObjectResult(deviceId);
             }
 
-            var entityId = await _entityfactory.GetEntityIdAsync(deviceId, (DeviceType)deviceType, default);
+            EntityId entityId = await _entityfactory.GetEntityIdAsync(deviceId, (DeviceType)deviceType, default);
 
-            var entity = await client.ReadEntityStateAsync<JObject>(entityId);
+            EntityStateResponse<JObject> entity = await client.ReadEntityStateAsync<JObject>(entityId);
             if (entity.EntityExists)
             {
                 var device = entity.EntityState.ToDeviceDetailModel();
@@ -115,7 +115,7 @@ namespace DurableFunctions.Entities
                 return new BadRequestObjectResult(deviceId);
             }
 
-            var entityId = await _entityfactory.GetEntityIdAsync(deviceId, (DeviceType)deviceType, default);
+            EntityId entityId = await _entityfactory.GetEntityIdAsync(deviceId, (DeviceType)deviceType, default);
 
             var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
 
@@ -131,7 +131,7 @@ namespace DurableFunctions.Entities
         {
             var result = new List<JObject>();
 
-            var queryDefinition = new EntityQuery()
+            EntityQuery queryDefinition = new EntityQuery()
             {
                 PageSize = 100,
                 FetchState = true,
@@ -140,7 +140,7 @@ namespace DurableFunctions.Entities
 
             do
             {
-                var queryResult = await client.ListEntitiesAsync(queryDefinition, default);
+                EntityQueryResult queryResult = await client.ListEntitiesAsync(queryDefinition, default);
 
                 foreach (var item in queryResult.Entities)
                 {

@@ -24,11 +24,9 @@ namespace DurableFunctions.HumanInteraction
 
         private readonly IConfiguration configuration;
 
-        public HumanInteractionFunctions(IWeatherService weatherService, IConfiguration configuration)
+        public HumanInteractionFunctions(IConfiguration configuration)
         {
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-
-            this.configuration = configuration;
         }
 
         [FunctionName("HumanInteraction_Client")]
